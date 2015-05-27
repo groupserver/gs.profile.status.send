@@ -19,6 +19,7 @@ from argparse import ArgumentParser  # Standard in Python 2.7
 from httplib import OK as HTTP_OK
 from json import loads as load_json
 import sys
+from textwrap import fill
 from urlparse import urlparse
 # Extra libraries
 from blessings import Terminal
@@ -99,7 +100,7 @@ SEND_STATUS_URI = '/gs-profile-status-send.html'
 
 
 def send_status(hostname, userId, token):
-    '''Send a digest for a particular person
+    '''Send a profile-status notification for a particular person
 
 :param str hostname: The name of the host to use.
 :param str userId: The identifier for the person.
@@ -115,6 +116,8 @@ def send_status(hostname, userId, token):
         m = '{reason} ({status} <{host}>)'
         msg = m.format(reason=reason, status=status, host=hostname)
         raise NotOk(msg)
+    retval = load_json(data)
+    return retval
 
 
 def show_progress(profileId, curr, total):
@@ -128,13 +131,9 @@ def show_progress(profileId, curr, total):
 also displayed if the terminal supports it.'''
     t = Terminal()
     # Write the site and group
-    if curr > 0 and t.does_styling:
-        # Clear the line above (the progress bar)
-        sys.stdout.write(t.move_up + t.move_x(0) + t.clear_eol)
-        sys.stdout.flush()
-    m = 'Sending status to {0}\n'
+    m = 'Sending status ({0})...\n'
     sys.stdout.write(t.white(m.format(profileId)))
-    # Display progress
+    # Display the progress bar
     if t.does_styling:
         # Length of the bar = (width of term - the two brackets) * progress
         p = int(((t.width - 2) * (curr / total)))
@@ -143,6 +142,24 @@ also displayed if the terminal supports it.'''
         # (0-indexed)
         space = ' ' * (t.width - p - 3)
         sys.stdout.write(t.bold('[' + bar + space + ']\n'))
+    sys.stdout.flush()
+
+
+def show_done(r):
+    '''Show feedback when the notification is sent
+
+:param dict r: The response from the server'''
+    t = Terminal()
+    # Write the site and group
+    if t.does_styling:
+        # Clear the line above (the progress bar)
+        sys.stdout.write(t.move_up + t.move_x(0) + t.clear_eol)
+    responseColours = {0: t.green, -2: t.red, -4: t.yellow}
+    done = responseColours[r['status']]('    Done: ')
+    sys.stdout.write(done)
+    msg = fill(r['message'], t.width-10, subsequent_indent=' '*10)
+    sys.stdout.write(t.white(msg))
+    sys.stdout.write('\n')
     sys.stdout.flush()
 
 
@@ -182,12 +199,14 @@ def main(configFileName='etc/gsconfig.ini'):
             show_progress(userId, i, len(userIds))
 
         try:
-            send_status(hostname, userId, token)
+            r = send_status(hostname, userId, token)
         except NotOk, no:
             m = 'Error communicating with the server while sending the '\
                 'status notification to {0}:\n{1}\n'
             msg = m.format(userId, no)
             sys.stderr.write(msg)
+        show_done(r)
+
     sys.exit(exit_vals['success'])
 
 if __name__ == '__main__':
