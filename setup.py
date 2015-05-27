@@ -22,6 +22,7 @@ version = get_version()
 
 # The argparse library was added to core in Python 2.7
 core = ['setuptools',
+        'blessings',
         'gs.config',  # Note: without zope-support
         'gs.form', ]
 if sys.version_info > (2, 6):
@@ -75,7 +76,7 @@ setup(
     extras_require={'docs': ['Sphinx'], },
     entry_points={
         'console_scripts': [
-            'send_profile = gs.profile.status.send.script:main',
+            'sendprofile = gs.profile.status.send.script:main',
             ],
         # --=mpj17=-- Entry points are the work of the devil. Some time
         # you, me and Mr Soldering Iron are going to have a little chat
