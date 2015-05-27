@@ -154,12 +154,15 @@ def show_done(r):
     if t.does_styling:
         # Clear the line above (the progress bar)
         sys.stdout.write(t.move_up + t.move_x(0) + t.clear_eol)
-    responseColours = {0: t.green, -2: t.red, -4: t.yellow}
-    done = responseColours[r['status']]('    Done: ')
-    sys.stdout.write(done)
-    msg = fill(r['message'], t.width-10, subsequent_indent=' '*10)
-    sys.stdout.write(t.white(msg))
-    sys.stdout.write('\n')
+
+        responseColours = {0: t.green, -2: t.red, }
+        done = responseColours.get(r['status'], t.yellow)('    Done: ')
+        m = t.white(fill(r['message'], t.width-10, subsequent_indent=' '*10))
+    else:
+        done = b'    Done: '
+        m = r['message'].encode('ascii', 'ignore')
+    msg = ''.join([done, m, '\n'])
+    sys.stdout.write(msg)
     sys.stdout.flush()
 
 
@@ -181,18 +184,20 @@ def main(configFileName='etc/gsconfig.ini'):
     hostname = parsedUrl.hostname
 
     if args.verbose:
-        sys.stdout.write('Retrieving the list of people\n')
+        sys.stdout.write('Retrieving the list of people...')
         sys.stdout.flush()
     try:
         userIds = get_userIds(hostname, token)
     except NotOk as no:
-        m = 'Error communicating with the server while recieving the '\
+        m = '\nError communicating with the server while recieving the '\
             'list of people:\n{message}\n'
         msg = m.format(message=no)
         sys.stderr.write(msg)
         sys.exit(exit_vals['communication_failure'])
 
     if args.verbose:
+        sys.stderr.write(' done\n')  # Getting the people
+        sys.stdout.flush()
         sys.stdout.write('Sending the status notification to each person\n')
     for i, userId in enumerate(userIds):
         if args.verbose:
@@ -204,7 +209,7 @@ def main(configFileName='etc/gsconfig.ini'):
             m = 'Error communicating with the server while sending the '\
                 'status notification to {0}:\n{1}\n'
             msg = m.format(userId, no)
-            sys.stderr.write(msg)
+            r = {'status': -2, 'message': msg}
         show_done(r)
 
     sys.exit(exit_vals['success'])
