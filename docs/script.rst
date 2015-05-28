@@ -1,17 +1,17 @@
-:program:`smtp2gs`
-==================
+:program:`sendprofile`
+======================
 
-.. program:: send_profile
+.. program:: sendprofile
 
 Synopsis
 --------
 
-   :program:`send_profile` [:option:`-h`] [:option:`-c` <CONFIG>] [:option:`-i` <INSTANCE>] :option:`url`
+   :program:`sendprofile` [:option:`-h`] [:option:`-c` <CONFIG>] [:option:`-i` <INSTANCE>] [:option:`-t` <TIME>] [:option:`-v`] :option:`url`
 
 Description
 -----------
 
-:program:`send_profile` sends the monthly profile-status
+:program:`sendprofile` sends the monthly profile-status
 notification out to all the people with profiles in a GroupServer
 instance. Normally it is called by :manpage:`cron(8)`.
 
@@ -41,9 +41,20 @@ Optional Arguments
   The identifier of the GroupServer instance configuration to use
   (default ``default``).
 
+.. option:: -v, --verbose
+
+   Turn on verbose output (default is silent).
+
+.. option:: -t <TIME>, --throttle <TIME>
+
+  The time (in seconds) to pause when the notifications is
+  successfully sent (default ``0``). For large sites sending the
+  notification can be computationally expensive, and adding a
+  throttle allows other requests to be processed by the server.
+
 Returns
 =======
 
-:program:`send_profile` returns ``0`` on success, or a non-zero
+:program:`sendprofile` returns ``0`` on success, or a non-zero
 value on an error (following the convention specified in
 :file:`/usr/include/sysexits.h`).

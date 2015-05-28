@@ -8,5 +8,5 @@ with the ``smtp2gs`` script [#smpt2gs]_.
 .. [#config] See ``gs.config``
              <https://github.com/groupserver/gs.config>
    
-.. [#config] See ``gs.group.messages.add.smtp2gs``
+.. [#smtp2gs] See ``gs.group.messages.add.smtp2gs``
              <https://github.com/groupserver/gs.group.messages.add.smtp2gs>

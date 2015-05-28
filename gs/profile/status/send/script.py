@@ -20,6 +20,7 @@ from httplib import OK as HTTP_OK
 from json import loads as load_json
 import sys
 from textwrap import fill
+from time import sleep
 from urlparse import urlparse
 # Extra libraries
 from blessings import Terminal
@@ -52,6 +53,10 @@ def get_args(configFileName):
         '-i', '--instance', dest='instance', default='default', type=str,
         help='The identifier of the GroupServer instance configuration to '
              'use (default "%(default)s").')
+    p.add_argument(
+        '-t', '--throttle', dest='throttle', default=0, type=int,
+        help='The time (in seconds) to pause when the notifications is successfully sent '
+             '(default "%(default)s").')
     p.add_argument(
         '-v', '--verbose', dest='verbose', default=False,
         action='store_true',
@@ -211,6 +216,8 @@ def main(configFileName='etc/gsconfig.ini'):
             msg = m.format(userId, no)
             r = {'status': -2, 'message': msg}
         show_done(r)
+        if r['status'] == 0:
+            sleep(args.throttle)
 
     sys.exit(exit_vals['success'])
 

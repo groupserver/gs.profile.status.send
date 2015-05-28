@@ -235,7 +235,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('script', 'send_profile', u'Send the profile-status out to everyone',
+    ('script', 'sendprofile', u'Send the profile-status out to everyone',
      [u'GroupServer.org'], 1)
 ]
 
