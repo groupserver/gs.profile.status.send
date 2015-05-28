@@ -1,8 +1,9 @@
-:mod:`gs.group.messages.add.smtp2gs` Documentation
-==================================================
+:mod:`gs.profile.status.send` Documentation
+===========================================
 
-This product allows email messages, coming in on SMTP, to be
-added to a GroupServer group.
+This product provides the script that sends the *Profile-status*
+notification (*What is happening in your groups*) to the members
+of a GroupServer_ instance.
 
 Contents:
 
@@ -20,3 +21,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. _GroupServer: http://groupserver.org/

@@ -172,6 +172,9 @@ def show_done(r):
 
 
 def main(configFileName='etc/gsconfig.ini'):
+    '''Send the profile status to all the members, using web-hooks
+
+:param str configFileName: The name of the configuration file.'''
     args = get_args(configFileName)
     try:
         token = get_token_from_config(args.instance, args.config)

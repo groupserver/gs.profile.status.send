@@ -1,9 +1,9 @@
 Configuration file
 ==================
 
-The configuration for the ``send_profile`` script is handled by
-the ``gs.config`` module [#config]_. It shares its authentication
-with the ``smtp2gs`` script [#smpt2gs]_.
+The configuration for the :program:`sendprofile` script is
+handled by the ``gs.config`` module [#config]_. It shares its
+authentication with the ``smtp2gs`` script [#smtp2gs]_.
 
 .. [#config] See ``gs.config``
              <https://github.com/groupserver/gs.config>
