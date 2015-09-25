@@ -202,6 +202,10 @@ def main(configFileName='etc/gsconfig.ini'):
         msg = m.format(message=no)
         sys.stderr.write(msg)
         sys.exit(exit_vals['communication_failure'])
+    except KeyboardInterrupt:
+        if args.verbose:
+            sys.stderr.write('\nQuit\n')
+        sys.exit(exit_vals['terminated'])
 
     if args.verbose:
         sys.stdout.write(' done\n')  # Getting the people
@@ -217,6 +221,10 @@ def main(configFileName='etc/gsconfig.ini'):
                 'status notification to {0}:\n{1}\n'
             msg = m.format(userId, no)
             r = {'status': -2, 'message': msg}
+        except KeyboardInterrupt:
+            if args.verbose:
+                sys.stderr.write('\nQuit\n')
+            sys.exit(exit_vals['terminated'])
         if args.verbose:
             show_done(r)
         if r['status'] == 0:
@@ -226,3 +234,4 @@ def main(configFileName='etc/gsconfig.ini'):
 
 if __name__ == '__main__':
     main()
+
