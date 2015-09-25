@@ -53,8 +53,12 @@ Optional Arguments
   throttle allows other requests to be processed by the server.
 
 Returns
-=======
+-------
 
-:program:`sendprofile` returns ``0`` on success, or a non-zero
-value on an error (following the convention specified in
-:file:`/usr/include/sysexits.h`).
+:program:`sendprofile` returns
+
+* ``0`` on success,
+* ``130`` if the user terminated the program (:kbd:`Control-c`),
+  or
+* A value following the convention specified in
+  :file:`/usr/include/sysexits.h`.
