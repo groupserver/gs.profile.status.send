@@ -90,7 +90,7 @@ def get_userIds(hostname, token):
 :rtype: list'''
     fields = {'token': token, 'get': '', }
     status, reason, data = post_multipart(hostname, PROFILE_URI,
-                                          fields)  # port?
+                                          fields)
     if status != HTTP_OK:
         m = '{reason} ({status} <{host}>)'
         msg = m.format(reason=reason, status=status, host=hostname)
@@ -116,7 +116,7 @@ def send_status(hostname, userId, token):
         'token': token,
         'send': 'Send'}
     status, reason, data = post_multipart(hostname, SEND_STATUS_URI,
-                                          fields)  # port?
+                                          fields)
     if status != HTTP_OK:
         m = '{reason} ({status} <{host}>)'
         msg = m.format(reason=reason, status=status, host=hostname)
@@ -204,13 +204,12 @@ def main(configFileName='etc/gsconfig.ini'):
         sys.exit(exit_vals['communication_failure'])
 
     if args.verbose:
-        sys.stderr.write(' done\n')  # Getting the people
+        sys.stdout.write(' done\n')  # Getting the people
         sys.stdout.flush()
         sys.stdout.write('Sending the status notification to each person\n')
     for i, userId in enumerate(userIds):
         if args.verbose:
             show_progress(userId, i, len(userIds))
-
         try:
             r = send_status(hostname, userId, token)
         except NotOk, no:
@@ -218,7 +217,8 @@ def main(configFileName='etc/gsconfig.ini'):
                 'status notification to {0}:\n{1}\n'
             msg = m.format(userId, no)
             r = {'status': -2, 'message': msg}
-        show_done(r)
+        if args.verbose:
+            show_done(r)
         if r['status'] == 0:
             sleep(args.throttle)
 
