@@ -26,7 +26,7 @@ Resources
 =========
 
 - Documentation:
-  http://groupserver.readthedocs.org/projects/gsprofilestatussend
+  http://groupserver.readthedocs.io/projects/gsprofilestatussend
 - Code repository:
   https://github.com/groupserver/gs.profile.status.send
 - Questions and comments to

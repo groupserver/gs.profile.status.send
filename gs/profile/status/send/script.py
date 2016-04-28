@@ -216,7 +216,7 @@ def main(configFileName='etc/gsconfig.ini'):
             show_progress(userId, i, len(userIds))
         try:
             r = send_status(hostname, userId, token)
-        except NotOk, no:
+        except NotOk as no:
             m = 'Error communicating with the server while sending the '\
                 'status notification to {0}:\n{1}\n'
             msg = m.format(userId, no)
